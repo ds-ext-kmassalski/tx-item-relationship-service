@@ -71,19 +71,16 @@ jobs:
       - name: Create temp CHANGELOG file
         run: |
           touch ./charts/irs-helm/CHANGELOG-temp.md
-          echo "test" >> ./charts/irs-helm/CHANGELOG-temp.md
+          
+          sed -n -e '/## \[6.4.2\]/,/## \[/ p' charts/irs-helm/CHANGELOG.md | head -n -1 | tail -n +2 >> ./charts/irs-helm/CHANGELOG-temp.md
+          echo **Full Changelog**: ${{ github.server_url }}/${{ github.repository }}/compare/${{ env.latest_version }}...${{ env.current_version }} >> ./charts/irs-helm/CHANGELOG-temp.md
           
           echo "cat ./charts/irs-helm/CHANGELOG-temp.md"
           cat ./charts/irs-helm/CHANGELOG-temp.md
-
-          echo "ls -a ."
-          ls -a .
-
-          echo "ls -a ./charts/irs-helm"
-          ls -a ./charts/irs-helm
-
-          echo "ls -a ${{ github.workspace }}"
-          ls -a ${{ github.workspace }}
+          
+          
+          echo ${{ env.latest_version }}
+          echo ${{ env.current_version }}
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
