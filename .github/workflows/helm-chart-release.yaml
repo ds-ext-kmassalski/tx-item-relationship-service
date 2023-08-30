@@ -74,8 +74,8 @@ jobs:
           
           touch CHANGELOG-temp.md
           
-          currentVersionNumber=$( ${{ needs.get-helm-charts-versions-irs.outputs.current_version }} | sed -e "s/^irs-helm-//" )
-          echo $currentVersionNumber
+          currentVersionNumber=$(echo ${{ needs.get-helm-charts-versions-irs.outputs.current_version }} | sed -e "s/^irs-helm-//" )
+          echo currentVersionNumber=$currentVersionNumber
           
           sed -n -e '/## \[ $currentVersionNumber \]/,/## \[/ p' CHANGELOG.md | head -n -1 | tail -n +2 >> CHANGELOG-temp.md
           echo **Full Changelog**: ${{ github.server_url }}/${{ github.repository }}/compare/${{ needs.get-helm-charts-versions-irs.outputs.latest_version }}...${{ needs.get-helm-charts-versions-irs.outputs.current_version }} >> CHANGELOG-temp.md
