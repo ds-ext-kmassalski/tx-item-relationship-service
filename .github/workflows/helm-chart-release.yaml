@@ -75,13 +75,13 @@ jobs:
           touch CHANGELOG-temp.md
           
           sed -n -e '/## \[6.4.2\]/,/## \[/ p' CHANGELOG.md | head -n -1 | tail -n +2 >> CHANGELOG-temp.md
-          echo **Full Changelog**: ${{ github.server_url }}/${{ github.repository }}/compare/${{ steps.get-helm-charts-versions-irs.outputs.latest_version }}...${{ steps.get-helm-charts-versions-irs.outputs.current_version }} >> CHANGELOG-temp.md
+          echo **Full Changelog**: ${{ github.server_url }}/${{ github.repository }}/compare/${{ needs.get-helm-charts-versions-irs.outputs.latest_version }}...${{ needs.get-helm-charts-versions-irs.outputs.current_version }} >> CHANGELOG-temp.md
           
           echo "cat CHANGELOG-temp.md"
           cat CHANGELOG-temp.md
           
-          echo ${{ steps.get-helm-charts-versions-irs.outputs.latest_version }}
-          echo ${{ steps.get-helm-charts-versions-irs.outputs.current_version }}
+          echo ${{ needs.get-helm-charts-versions-irs.outputs.latest_version }}
+          echo ${{ needs.get-helm-charts-versions-irs.outputs.current_version }}
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
