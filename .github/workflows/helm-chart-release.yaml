@@ -68,6 +68,11 @@ jobs:
           helm repo add grafana https://grafana.github.io/helm-charts
           helm dependency update
 
+      - name: Create temp CHANGELOG file
+        run: |
+          touch .CHANGELOG-temp.md
+          echo "test" >> .CHANGELOG-temp.md
+
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
         with:
