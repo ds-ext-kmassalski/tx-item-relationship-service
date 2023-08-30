@@ -74,7 +74,7 @@ jobs:
           
           touch CHANGELOG-temp.md
           
-          currentVersionNumber=${{ needs.get-helm-charts-versions-irs.outputs.current_version }} | sed -e "s/^irs-helm-//"
+          currentVersionNumber=$({{ needs.get-helm-charts-versions-irs.outputs.current_version }} | sed -e "s/^irs-helm-//")
           echo $currentVersionNumber
           
           sed -n -e '/## \[$currentVersionNumber\]/,/## \[/ p' CHANGELOG.md | head -n -1 | tail -n +2 >> CHANGELOG-temp.md
