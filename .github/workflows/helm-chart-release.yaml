@@ -70,14 +70,17 @@ jobs:
 
       - name: Create temp CHANGELOG file
         run: |
-          touch .CHANGELOG-temp.md
-          echo "test" >> .CHANGELOG-temp.md
+          touch ./charts/irs-helm/CHANGELOG-temp.md
+          echo "test" >> ./charts/irs-helm/CHANGELOG-temp.md
           
-          echo "cat .CHANGELOG-temp.md"
-          cat .CHANGELOG-temp.md
+          echo "cat ./charts/irs-helm/CHANGELOG-temp.md"
+          cat ./charts/irs-helm/CHANGELOG-temp.md
 
           echo "ls -a ."
           ls -a .
+
+          echo "ls -a ./charts/irs-helm"
+          ls -a ./charts/irs-helm
 
           echo "ls -a ${{ github.workspace }}"
           ls -a ${{ github.workspace }}
