@@ -68,7 +68,7 @@ jobs:
           helm repo add grafana https://grafana.github.io/helm-charts
           helm dependency update
 
-      - name: Create temporary CHANGELOG file
+      - name: Create temporary CHANGELOG file for helm release
         run: |
           cd charts/irs-helm
           
@@ -77,7 +77,7 @@ jobs:
           currentVersionNumber=$(echo ${{ needs.get-helm-charts-versions-irs.outputs.current_version }} | sed -e "s/^irs-helm-//" )
           echo currentVersionNumber=$currentVersionNumber
           
-          sed -n -e '/## \[$currentVersionNumber\]/,/## \[/ p' CHANGELOG.md | head -n -1 | tail -n +2 >> CHANGELOG-temp.md
+          sed -n -e '/## \[6.4.2\]/,/## \[/ p' CHANGELOG.md | head -n -1 | tail -n +2 >> CHANGELOG-temp.md
           echo **Full Changelog**: ${{ github.server_url }}/${{ github.repository }}/compare/${{ needs.get-helm-charts-versions-irs.outputs.latest_version }}...${{ needs.get-helm-charts-versions-irs.outputs.current_version }} >> CHANGELOG-temp.md
           
           echo "cat CHANGELOG-temp.md"
