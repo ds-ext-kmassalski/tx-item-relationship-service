@@ -70,17 +70,18 @@ jobs:
 
       - name: Create temp CHANGELOG file
         run: |
-          touch ./charts/irs-helm/CHANGELOG-temp.md
+          cd charts/irs-helm
           
-          sed -n -e '/## \[6.4.2\]/,/## \[/ p' charts/irs-helm/CHANGELOG.md | head -n -1 | tail -n +2 >> ./charts/irs-helm/CHANGELOG-temp.md
-          echo **Full Changelog**: ${{ github.server_url }}/${{ github.repository }}/compare/${{ env.latest_version }}...${{ env.current_version }} >> ./charts/irs-helm/CHANGELOG-temp.md
+          touch CHANGELOG-temp.md
           
-          echo "cat ./charts/irs-helm/CHANGELOG-temp.md"
-          cat ./charts/irs-helm/CHANGELOG-temp.md
+          sed -n -e '/## \[6.4.2\]/,/## \[/ p' CHANGELOG.md | head -n -1 | tail -n +2 >> CHANGELOG-temp.md
+          echo **Full Changelog**: ${{ github.server_url }}/${{ github.repository }}/compare/${{ get-helm-charts-versions-irs.outputs.latest_version }}...${{ get-helm-charts-versions-irs.outputs.current_version }} >> CHANGELOG-temp.md
           
+          echo "cat CHANGELOG-temp.md"
+          cat CHANGELOG-temp.md
           
-          echo ${{ env.latest_version }}
-          echo ${{ env.current_version }}
+          echo ${{ get-helm-charts-versions-irs.outputs.latest_version }}
+          echo ${{ get-helm-charts-versions-irs.outputs.current_version }}
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
