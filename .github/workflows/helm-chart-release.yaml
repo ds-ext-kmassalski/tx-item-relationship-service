@@ -72,6 +72,15 @@ jobs:
         run: |
           touch .CHANGELOG-temp.md
           echo "test" >> .CHANGELOG-temp.md
+          
+          echo "cat .CHANGELOG-temp.md"
+          cat .CHANGELOG-temp.md
+
+          echo "ls -a ."
+          ls -a .
+
+          echo "ls -a ${{ github.workspace }}"
+          ls -a ${{ github.workspace }}
 
       - name: Run chart-releaser
         uses: helm/chart-releaser-action@v1.5.0
