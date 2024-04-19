@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>Item Relationship Service Documentation</title>
+<title>Requirements overview</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,77 +439,65 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Item Relationship Service Documentation</h1>
+<h1>Requirements overview</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_administration_guide">Administration Guide</a></li>
-<li><a href="#_api_documentation">API-Documentation</a></li>
-<li><a href="#_architecture_documentation_arc42">Architecture Documentation (arc42)</a></li>
-<li><a href="#_notice">NOTICE</a></li>
+<li><a href="#_what_is_the_item_relationship_service">What is the Item Relationship Service?</a></li>
+<li><a href="#_substantial_features">Substantial Features</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_administration_guide">Administration Guide</h2>
+<h2 id="_what_is_the_item_relationship_service">What is the Item Relationship Service?</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="administration/administration-guide.html">administration/administration-guide.html</a></p>
+<p>The IRS is a:</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_api_documentation">API-Documentation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><a href="api-specification/api-specification.html">OpenApi specification</a></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_architecture_documentation_arc42">Architecture Documentation (arc42)</h2>
-<div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p><a href="arc42/index.html">Single chapters</a></p>
+<p>Functional federated component</p>
 </li>
 <li>
-<p><a href="arc42/full.html">Full document</a></p>
+<p>API endpoint to retrieve the tree structures in a recursive way, which data assets are distributed throughout the Catena-X network</p>
+</li>
+<li>
+<p>Reference implementation</p>
+</li>
+<li>
+<p>Data chain provider</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_notice">NOTICE</h2>
+<h2 id="_substantial_features">Substantial Features</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>This work is licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
-</div>
 <div class="ulist">
 <ul>
 <li>
-<p>SPDX-License-Identifier: Apache-2.0</p>
+<p>provide a top-down BoM asBuilt tree structure along the submodel "SingleLevelBomAsBuilt"</p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)</p>
+<p>usage of EDC consumer for communicating with the Catena-X network</p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2022, 2023 BOSCH AG</p>
+<p>functionality of IRS provider will be handled by providers submodel servers</p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2021, 2022 ZF Friedrichshafen AG</p>
+<p>federated IRS service</p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2022  ISTOS GmbH</p>
+<p>'asBuild' BoM of serialized components</p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Contributors to the Eclipse Foundation</p>
+<p>provides endpoints for submodel-descriptors</p>
 </li>
 <li>
-<p>Source URL: <a href="https://github.com/eclipse-tractusx/item-relationship-service" class="bare">https://github.com/eclipse-tractusx/item-relationship-service</a></p>
+<p>start recursive Environmental and Social Standard investigations throughout the network based on the "asPlanned" lifecycle</p>
 </li>
 </ul>
 </div>

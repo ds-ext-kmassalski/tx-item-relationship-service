@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>Item Relationship Service Documentation</title>
+<title>"Under-the-hood" concepts</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,79 +439,422 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Item Relationship Service Documentation</h1>
+<h1>"Under-the-hood" concepts</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_administration_guide">Administration Guide</a></li>
-<li><a href="#_api_documentation">API-Documentation</a></li>
-<li><a href="#_architecture_documentation_arc42">Architecture Documentation (arc42)</a></li>
-<li><a href="#_notice">NOTICE</a></li>
+<li><a href="#_persistence">Persistence</a></li>
+<li><a href="#_transaction_handling">Transaction handling</a></li>
+<li><a href="#_session_handling">Session handling</a></li>
+<li><a href="#_communication_and_integration">Communication and integration</a></li>
+<li><a href="#_exception_and_error_handling">Exception and error handling</a>
+<ul class="sectlevel2">
+<li><a href="#_technical_errors">Technical errors</a></li>
+<li><a href="#_functional_errors">Functional errors</a></li>
+<li><a href="#_rules_for_exception_handling">Rules for exception handling</a></li>
+</ul>
+</li>
+<li><a href="#_parallelization_and_threading">Parallelization and threading</a></li>
+<li><a href="#_plausibility_checks_and_validation">Plausibility checks and validation</a></li>
+<li><a href="#_policy_store">Policy Store</a></li>
+<li><a href="#_digital_twin_edc_requirements">Digital Twin / EDC requirements</a></li>
+<li><a href="#_caching">Caching</a>
+<ul class="sectlevel2">
+<li><a href="#_bpdm">BPDM</a></li>
+<li><a href="#_semantics_hub">Semantics Hub</a></li>
+<li><a href="#_discovery_service">Discovery Service</a></li>
+</ul>
+</li>
+<li><a href="#_discovery_process">Discovery Process</a>
+<ul class="sectlevel2">
+<li><a href="#_digital_twin_registry">Digital Twin Registry</a></li>
+<li><a href="#_edc">EDC</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_administration_guide">Administration Guide</h2>
+<h2 id="_persistence">Persistence</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="administration/administration-guide.html">administration/administration-guide.html</a></p>
+<p>The IRS stores two types of data in a persistent way:</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_api_documentation">API-Documentation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><a href="api-specification/api-specification.html">OpenApi specification</a></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_architecture_documentation_arc42">Architecture Documentation (arc42)</h2>
-<div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p><a href="arc42/index.html">Single chapters</a></p>
+<p>Job metadata</p>
 </li>
 <li>
-<p><a href="arc42/full.html">Full document</a></p>
+<p>Job payloads, e.g. AAS shells or submodel data</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>All of this is data is stored in an object store.
+The currently used implementation is Minio (Amazon S3 compatible).
+This reduces the complexity in storing and retrieving data.
+There also is no predefined model for the data, every document can be stored as it is.
+The downside of this approach is lack of query functionality, as we can only search through the keys of the entries but not based on the value data.
+In the future, another approach or an additional way to to index the data might be required.</p>
+</div>
+<div class="paragraph">
+<p>To let the data survive system restarts, Minio needs to use a persistent volume for the data storage.
+A default configuration for this is provided in the Helm charts.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_transaction_handling">Transaction handling</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There currently is no transaction management in the IRS.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_session_handling">Session handling</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There is no session handling in the IRS, access is solely based on bearer tokens, the API is stateless.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_communication_and_integration">Communication and integration</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>All interfaces to other systems are using RESTful calls over HTTP(S).
+Where central authentication is required, a common OAuth2 provider is used.</p>
+</div>
+<div class="paragraph">
+<p>For outgoing calls, the Spring RestTemplate mechanism is used and separate RestTemplates are created for the different ways of authentication.</p>
+</div>
+<div class="paragraph">
+<p>For incoming calls, we utilize the Spring REST Controller mechanism, annotating the interfaces accordingly and also documenting the endpoints using OpenAPI annotations.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_exception_and_error_handling">Exception and error handling</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>There are two types of potential errors in the IRS:</p>
+</div>
+<div class="sect2">
+<h3 id="_technical_errors">Technical errors</h3>
+<div class="paragraph">
+<p>Technical errors occur when there is a problem with the application itself, its configuration or directly connected infrastructure, e.g. the Minio persistence.
+Usually, the application cannot solve these problems by itself and requires some external support (manual work or automated recovery mechanisms, e.g. Kubernetes liveness probes).</p>
+</div>
+<div class="paragraph">
+<p>These errors are printed mainly to the application log and are relevant for the healthchecks.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_functional_errors">Functional errors</h3>
+<div class="paragraph">
+<p>Functional errors occur when there is a problem with the data that is being processed or external systems are unavailable and data cannot be sent / fetched as required for the process.
+While the system might not be able to provide the required function at that moment, it may work with a different dataset or as soon as the external systems recover.</p>
+</div>
+<div class="paragraph">
+<p>These errors are reported in the Job response and do not directly affect application health.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_rules_for_exception_handling">Rules for exception handling</h3>
+<div class="sect3">
+<h4 id="_throw_or_log_dont_do_both">Throw or log, don&#8217;t do both</h4>
+<div class="paragraph">
+<p>When catching an exception, either log the exception and handle the problem or rethrow it, so it can be handled at a higher level of the code.
+By doing both, an exception might be written to the log multiple times, which can be confusing.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_write_own_base_exceptions_for_internal_interfaces">Write own base exceptions for (internal) interfaces</h4>
+<div class="paragraph">
+<p>By defining a common (checked) base exception for an interface, the caller is forced to handle potential errors, but can keep the logic simple.
+On the other hand, you still have the possibility to derive various, meaningful exceptions for different error cases, which can then be thrown via the API.</p>
+</div>
+<div class="paragraph">
+<p>Of course, when using only RuntimeExceptions, this is not necessary - but those can be overlooked quite easily, so be careful there.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_central_fallback_exception_handler">Central fallback exception handler</h4>
+<div class="paragraph">
+<p>There will always be some exception that cannot be handled inside of the code correctly - or it may just have been unforeseen.
+A central fallback exception handler is required so all problems are visible in the log and the API always returns meaningful responses.
+In some cases, this is as simple as a HTTP 500.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_dont_expose_too_much_exception_details_over_api">Dont expose too much exception details over API</h4>
+<div class="paragraph">
+<p>It&#8217;s good to inform the user, why their request did not work, but only if they can do something about it (HTTP 4xx).
+So in case of application problems, you should not expose details of the problem to the caller.
+This way, we avoid opening potential attack vectors.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_parallelization_and_threading">Parallelization and threading</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The heart of the IRS is the parallel execution of planned jobs.
+As almost each job requires multiple calls to various endpoints, those are done in parallel as well to reduce the total execution time for each job.</p>
+</div>
+<div class="paragraph">
+<p>Tasks execution is orchestrated by the JobOrchestrator class.
+It utilizes a central ExecutorService, which manages the number of threads and schedules new Task as they come in.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_plausibility_checks_and_validation">Plausibility checks and validation</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Data validation happens at two points:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>IRS API: the data sent by the client is validated to match the model defined in the IRS.
+If the validation fails, the IRS sends a HTTP 400 response and indicates the problem to the caller.</p>
+</li>
+<li>
+<p>Submodel payload: each time a submodel payload is requested from via EDC, the data is validated against the model defined in the SemanticHub for the matching aspect type.</p>
+</li>
+<li>
+<p>EDC Contract Offer Policy: each time IRS consumes data over the EDC, the policies of the offered contract will be validated.
+IDs of so-called "Rahmenverträgen" or Framework-Agreements can be added to the IRS Policy Store to be accepted by the IRS.
+If a Contract Offer does not match any of the IDs store in Policy Store, the contract offer will be declined and no data will be consumed.</p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_notice">NOTICE</h2>
+<h2 id="_policy_store">Policy Store</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This work is licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
+<p>The IRS gives its users the ability to manage, create and delete complex policies containing permissions and constraints in order to obtain the most precise control over access and use of data received from the edc provider.
+Policies stored in Policy Store will serve as input with allowed restriction and will be checked against every item from EDC Catalog.</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>SPDX-License-Identifier: Apache-2.0</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022, 2023 BOSCH AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2022 ZF Friedrichshafen AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022  ISTOS GmbH</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Contributors to the Eclipse Foundation</p>
-</li>
-<li>
-<p>Source URL: <a href="https://github.com/eclipse-tractusx/item-relationship-service" class="bare">https://github.com/eclipse-tractusx/item-relationship-service</a></p>
-</li>
-</ul>
+<div class="paragraph">
+<p>The structure of a Policy that can be stored in storage can be easily viewed by using Policy Store endpoints in the published API documentation.
+Each policy may contain more than one permission, which in turn consists of constraints linked together by AND or OR relationships.
+This model provides full flexibility and control over stored access and use policies.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_digital_twin_edc_requirements">Digital Twin / EDC requirements</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>In order to work with the decentral network approach, IRS requires the Digital Twin to contain a <code>"subprotocolBody"</code> in each of the submodelDescriptor endpoints.
+This <code>"subprotocolBody"</code> has to contain the <code>"id"</code> of the EDC asset, as well as the <code>"dspEndpoint"</code> of the EDC, separated by a semicolon (e.g. <code>"subprotocolBody": "id=123;dspEndpoint=http://edc.control.plane/api/v1/dsp"</code>).</p>
+</div>
+<div class="paragraph">
+<p>The <code>"dspEndpoint"</code> is used to request the EDC catalog of the dataprovider and the <code>"id"</code> to filter for the exact asset inside this catalog.</p>
+</div>
+<div class="paragraph">
+<p>If the <code>"dspEndpoint"</code> is not present, every available EDC endpoint in DiscoveryService will be queried until a asset with the <code>"id"</code> can be found.</p>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_caching">Caching</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>The IRS caches data provided externally to avoid unnecessary requests and reduce execution time.</p>
+</div>
+<div class="paragraph">
+<p>Caching is implemented for the following services:</p>
+</div>
+<div class="sect2">
+<h3 id="_bpdm">BPDM</h3>
+<div class="paragraph">
+<p>Whenever a BPN is resolved via BPDM, the partner name is cached on IRS side, as this data does not change.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_semantics_hub">Semantics Hub</h3>
+<div class="paragraph">
+<p>Whenever a semantic model schema is requested from the Semantic Hub, it is stored locally until the cache is evicted (configurable).
+The IRS can preload configured schema models on startup to reduce on demand call times.</p>
+</div>
+<div class="paragraph">
+<p>Additionally, models can be deployed with the system as a backup to the real Semantic Hub service.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_discovery_service">Discovery Service</h3>
+<div class="paragraph">
+<p>The IRS uses the Discovery Finder in order to find the correct EDC Discovery URL for the type BPN.
+This URL is cached locally.</p>
+</div>
+<div class="paragraph">
+<p>When the EDC Discovery is requested to return the EDC connector endpoint URLs for a specific BPN, the results are cached as well.</p>
+</div>
+<div class="paragraph">
+<p>The time to live for both caches can be configured separately as described in the Administration Guide.</p>
+</div>
+<div class="paragraph">
+<p>Further information on Discovery Service can be found in the chapter "System scope and context".</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_discovery_process">Discovery Process</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_digital_twin_registry">Digital Twin Registry</h3>
+<div class="paragraph">
+<p>The Dataspace Discovery Service handles multiple EDC-Urls received for BPN.
+This applies to the following scenarios.</p>
+</div>
+<div class="sect3">
+<h4 id="_scenario_1_one_edc_with_multiple_dtrs">Scenario 1: One EDC with multiple DTRs</h4>
+<div class="paragraph">
+<p>IRS queries all DTRs for the globalAssetId and will take the first result it gets.
+If none of the DTRs return a result, IRS will create a tombstone.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--one-EDC-with-multiple-DTRs.svg" alt="discovery DTR  one EDC with multiple DTRs" width="535" height="478">
+</div>
+</div>
+<div class="paragraph">
+<p>Same diagram with a little more detail on IRS side:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--one-EDC-with-multiple-DTRs--detailed.svg" alt="discovery DTR  one EDC with multiple DTRs  detailed" width="904" height="778">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scenario_2_multiple_edcs_with_one_dtr">Scenario 2: Multiple EDCs with one DTR</h4>
+<div class="paragraph">
+<p>IRS starts a contract negotiation for all registry contract offers in parallel and queries the DTRs for all successful negotiations.
+The first registry which responds with a DT will be the one used by IRS.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-one-DTR.svg" alt="discovery DTR  multiple EDCs with one DTR" width="729" height="540">
+</div>
+</div>
+<div class="paragraph">
+<p>Same diagram with a little more detail on IRS side:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-one-DTR--detailed.svg" alt="discovery DTR  multiple EDCs with one DTR  detailed" width="1091" height="942">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scenario_3_one_edc_with_one_dtr">Scenario 3: One EDC with one DTR</h4>
+<div class="paragraph">
+<p>Only one EDC found for BPN and the catalog only contains one offer for the DTR.
+IRS will use this registry and will create a tombstone if no DT could be found for the globalAssetId.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--one-EDC-with-one-DTR.svg" alt="discovery DTR  one EDC with one DTR" width="422" height="295">
+</div>
+</div>
+<div class="paragraph">
+<p>Same diagram with a little more detail on IRS side:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--one-EDC-with-one-DTR--detailed.svg" alt="discovery DTR  one EDC with one DTR  detailed" width="787" height="494">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scenario_4_multiple_edcs_with_multiple_dtrs">Scenario 4: Multiple EDCs with multiple DTRs</h4>
+<div class="paragraph">
+<p>IRS starts a contract negotiation for all the registry offers.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-multiple-DTRs.svg" alt="discovery DTR  multiple EDCs with multiple DTRs" width="729" height="627">
+</div>
+</div>
+<div class="paragraph">
+<p>Same diagram with a little more detail on IRS side:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-multiple-DTRs--detailed.svg" alt="discovery DTR  multiple EDCs with multiple DTRs  detailed" width="1163" height="1454">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scenario_5_multiple_edcs_with_no_dtrs">Scenario 5: Multiple EDCs with no DTRs</h4>
+<div class="paragraph">
+<p>IRS starts a contract negotiation for all the registry offers and creates a tombstone since no DTR could be discovered.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-no-DTRs.svg" alt="discovery DTR  multiple EDCs with no DTRs" width="497" height="495">
+</div>
+</div>
+<div class="paragraph">
+<p>Same diagram with a little more detail on IRS side:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-no-DTRs--detailed.svg" alt="discovery DTR  multiple EDCs with no DTRs  detailed" width="861" height="824">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_special_scenario_same_dt_in_multiple_dtrs">Special Scenario: Same DT in multiple DTRs</h4>
+<div class="paragraph">
+<p>IRS will use all registries to query for the globalAssetId and takes the first result which is returned.
+If no DT could be found in any of the DTRs, IRS will create a tombstone.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_special_scenario_multiple_dts_with_the_same_globalassetid_in_one_dtr">Special Scenario: Multiple DTs (with the same globalAssetId) in one DTR</h4>
+<div class="paragraph">
+<p>IRS uses the <code>/query</code> endpoint of the DTR to get the DT id based on the globalAssetId.
+If more than one id is present for a globalAssetId, IRS will use the first of the list.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-DTs-with-the-same-globalAssedId-in-one-DTR.svg" alt="discovery DTR  multiple DTs with the same globalAssedId in one DTR" width="225" height="191">
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_edc">EDC</h3>
+<div class="paragraph">
+<p>EndpointDataReferenceStorage is in-memory local storage that holds records (EndpointDataReferences) by either assetId or contractAgreementId.</p>
+</div>
+<div class="paragraph">
+<p>When EDC gets EndpointDataReference describing endpoint serving data it uses EndpointDataReferenceStorage and query it by assetId.
+This allows reuse of already existing EndpointDataReference if it is present, valid, and it&#8217;s token is not expired, rather than starting whole new contract negotiation process.</p>
+</div>
+<div class="paragraph">
+<p>In case token is expired the process is also shortened.
+We don&#8217;t have to start new contract negotiation process, since we can obtain required contractAgreementId from present authCode.
+This improves request processing time.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-process-edc.svg" alt="discovery process edc" width="1253" height="535">
+</div>
+</div>
 </div>
 </div>
 </div>

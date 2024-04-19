@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>Item Relationship Service Documentation</title>
+<title>Troubleshooting</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,79 +439,71 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Item Relationship Service Documentation</h1>
+<h1>Troubleshooting</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_administration_guide">Administration Guide</a></li>
-<li><a href="#_api_documentation">API-Documentation</a></li>
-<li><a href="#_architecture_documentation_arc42">Architecture Documentation (arc42)</a></li>
-<li><a href="#_notice">NOTICE</a></li>
+<li><a href="#_proxy_support">Proxy support</a></li>
+<li><a href="#_troubleshooting_faq">Troubleshooting FAQ</a>
+<ul class="sectlevel2">
+<li><a href="#_minio">Minio</a></li>
+<li><a href="#_different_job_model_versions_maintenance">Different Job model versions maintenance</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_administration_guide">Administration Guide</h2>
+<h2 id="_proxy_support">Proxy support</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="administration/administration-guide.html">administration/administration-guide.html</a></p>
+<p>If you are using an HTTP(S) proxy for outgoing connections, you need to configure the IRS to use it.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>JAVA_TOOL_OPTIONS=-Dhttps.proxyHost=X.X.X.X -Dhttps.proxyPort=XXXX</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You might need to specify both <code>http</code> and <code>https</code> options, depending on your configuration.</p>
+</div>
+<div class="paragraph">
+<p>If your proxy is requiring authentication, you can use the <code>.proxyUser</code> and <code>.proxyPassword</code> properties in addition.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_api_documentation">API-Documentation</h2>
+<h2 id="_troubleshooting_faq">Troubleshooting FAQ</h2>
 <div class="sectionbody">
+<div class="sect2">
+<h3 id="_minio">Minio</h3>
+<div class="sect3">
+<h4 id="_error_the_specified_bucket_does_not_exist">Error: "The specified bucket does not exist"</h4>
 <div class="paragraph">
-<p><a href="api-specification/api-specification.html">OpenApi specification</a></p>
+<p>IRS tries to read data from or write to the Minio storage, but no bucket exists. This can happen if Minio is running without a persistent volume and restarts, thus losing all data.
+It can also happen if the persistent volume claim is deleted / recreated.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_architecture_documentation_arc42">Architecture Documentation (arc42)</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="arc42/index.html">Single chapters</a></p>
-</li>
-<li>
-<p><a href="arc42/full.html">Full document</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_notice">NOTICE</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>This work is licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
+<p><strong>Proposed solution steps:</strong></p>
 </div>
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p>SPDX-License-Identifier: Apache-2.0</p>
+<p>Make sure Minio is configured and running correctly.</p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)</p>
+<p>Restart the IRS - this will recreate the missing bucket automatically.</p>
 </li>
-<li>
-<p>SPDX-FileCopyrightText: 2022, 2023 BOSCH AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2022 ZF Friedrichshafen AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022  ISTOS GmbH</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Contributors to the Eclipse Foundation</p>
-</li>
-<li>
-<p>Source URL: <a href="https://github.com/eclipse-tractusx/item-relationship-service" class="bare">https://github.com/eclipse-tractusx/item-relationship-service</a></p>
-</li>
-</ul>
+</ol>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_different_job_model_versions_maintenance">Different Job model versions maintenance</h3>
+<div class="paragraph">
+<p>Currently, the IRS only supports one version of the Job model at a time. This means that if the Job model is changed in a newer IRS version, old models stored in minio will no longer be supported and returned from IRS endpoints. The IRS application will work as usual, old versions of Job can stay in Minio and don&#8217;t need to be removed - the IRS will simply ignore them. If you want to clear the minio from old models, the only way to achieve that is to delete them all and register new Jobs.</p>
+</div>
 </div>
 </div>
 </div>

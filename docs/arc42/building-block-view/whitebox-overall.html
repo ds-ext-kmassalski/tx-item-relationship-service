@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>Item Relationship Service Documentation</title>
+<title>Whitebox overall system</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,80 +439,184 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Item Relationship Service Documentation</h1>
+<h1>Whitebox overall system</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_administration_guide">Administration Guide</a></li>
-<li><a href="#_api_documentation">API-Documentation</a></li>
-<li><a href="#_architecture_documentation_arc42">Architecture Documentation (arc42)</a></li>
-<li><a href="#_notice">NOTICE</a></li>
+<li><a href="#_component_diagram">Component diagram</a></li>
+<li><a href="#_component_description">Component description</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_administration_guide">Administration Guide</h2>
+<div id="preamble">
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="administration/administration-guide.html">administration/administration-guide.html</a></p>
+<p>The interfaces show how the components interact with each other and which interfaces the IRS is providing.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_api_documentation">API-Documentation</h2>
+<h2 id="_component_diagram">Component diagram</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p><a href="api-specification/api-specification.html">OpenApi specification</a></p>
+<div class="imageblock">
+<div class="content">
+<img src="whitebox_overall_decentral.svg" alt="whitebox overall decentral" width="2764" height="871">
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_architecture_documentation_arc42">Architecture Documentation (arc42)</h2>
+<h2 id="_component_description">Component description</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="arc42/index.html">Single chapters</a></p>
-</li>
-<li>
-<p><a href="arc42/full.html">Full document</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_notice">NOTICE</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This work is licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>SPDX-License-Identifier: Apache-2.0</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022, 2023 BOSCH AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2022 ZF Friedrichshafen AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022  ISTOS GmbH</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Contributors to the Eclipse Foundation</p>
-</li>
-<li>
-<p>Source URL: <a href="https://github.com/eclipse-tractusx/item-relationship-service" class="bare">https://github.com/eclipse-tractusx/item-relationship-service</a></p>
-</li>
-</ul>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Components</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IRSApiConsumer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Proxy for any consumer of the IRS api.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IRS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The IRS consumes relationship information across the CX-network and builds the graph view. Within this documentation, the focus lies on the IRS</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Policy Store</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Policy Store component stores usage policies used to validate the consumption of data asset.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EDC Consumer</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The EDC Consumer component is there to fulfill the GAIA-X and IDSA-data sovereignty principles. The EDC Consumer consists of a control plane and a data plane.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EDC Provider</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The EDC Provider Component connects with EDC Consumer component and forms the end point for the actual exchange of data. It handles automatic contract negotiation and the subsequent exchange of data assets for connected applications.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Submodel Server</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Submodel Server offers endpoints for requesting the Submodel aspects.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">MIW</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Managed Identity Wallet as Self-Sovereign-Identity Provider for EDC</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Discovery Finder</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Discovery Finder is used to get the EDC Discovery Endpoint for a certain type of identification, e.g. BPNL.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">EDC Discovery</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The EDC Discovery Service is used to get EDC endpoints for a certain BPNL.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Semantic Hub</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Semantic Hub provides information about semantic models in a specific version. This also includes JSON schemas, which IRS uses to validate the payload received by data providers.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">BPDM</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Business Partner Data Management (BPDM) Service is used by the IRS to access shared business partner data for BPNs of Data Providers along the supply chain.</p></td>
+</tr>
+</tbody>
+</table>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Number</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">01</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IrsApiConsumer calls the <strong>IRS</strong> public /irs <strong>API</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">02</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IrsApiConsumer must authorize using <strong>technical C-X User</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">03</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Delegate authorization request to <strong>IdP</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">04</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IRS requesting for <strong>SubmodelAspects</strong> using <strong>EDC</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">05</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IRS requesting the <strong>decentral DigitalTwinRegistry</strong> over <strong>EDC</strong> and service discovery flow</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">06</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IRS uses EDC to ensure sovereign data consumption</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">07</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IRS MUST authorize at central IAM</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">08</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IRS lookup for EDC Provider by given BPNs over the <strong>EDC Discovery Service</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">09</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IRS lookup for <strong>EDC Discovery Services</strong> by given type &lt;BPN&gt; over the <strong>Discovery Finder</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">10</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IRS uses <strong>Semantic Hub</strong> to validate of <strong>SubmodelAspects</strong> payloads agains the schema provided in <strong>Semantic Hub</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">11</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In case "lookupBPNs" is active IRS provides a lookup of company for given BPN</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">12</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>EDC</strong> is connected to <strong>Managed Identity Wallet</strong> for access policy check for data offers</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">13</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>EDC</strong> communication covering negotiation and data consumption</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">14</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>EDC</strong> is connected to <strong>Managed Identity Wallet</strong> for access policy check for data offers</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">15</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>IRS</strong> accessing to <strong>SubmodelServer</strong> on Tier Level using the <strong>EDC</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">16</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>IRS</strong> accessing the <strong>decentral DigitalTwinRegistry</strong> on Tier Level using the <strong>EDC</strong></p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In case of the use-case Environmental and Social Standards, <strong>IRS</strong> sends notifications to the <strong>IRS-ESS</strong> instance running at the data provider using the <strong>EDC</strong>.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">18</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>IRS</strong> uses the Policy Store to load the usage policies stored for BPNLs in order to check the usage policies during the consumption of the data assets.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">19</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IrsApiConsumer calls the IRS public /policy <strong>API</strong></p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>

@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>Item Relationship Service Documentation</title>
+<title>Level 1</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,80 +439,125 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Item Relationship Service Documentation</h1>
+<h1>Level 1</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_administration_guide">Administration Guide</a></li>
-<li><a href="#_api_documentation">API-Documentation</a></li>
-<li><a href="#_architecture_documentation_arc42">Architecture Documentation (arc42)</a></li>
-<li><a href="#_notice">NOTICE</a></li>
+<li><a href="#_component_diagram">Component diagram</a></li>
+<li><a href="#_component_description">Component description</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_administration_guide">Administration Guide</h2>
+<h2 id="_component_diagram">Component diagram</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p><a href="administration/administration-guide.html">administration/administration-guide.html</a></p>
+<div class="imageblock">
+<div class="content">
+<img src="level-1.svg" alt="level 1" width="840" height="1031">
+</div>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_api_documentation">API-Documentation</h2>
+<h2 id="_component_description">Component description</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p><a href="api-specification/api-specification.html">OpenApi specification</a></p>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Components</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>IRS</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The IRS builds a digital representation of a product (digital twin) and the relationships of items the product consists of in a hierarchical structure.</p>
+<p class="tableblock">The result is an item graph in which each node represents a digital item of the product - this graph is called "Item Graph".</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>IRS API</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <strong>IRS API</strong> is the Interface over which the Data Consumer is communicating.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>IrsController</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <strong>IrsController</strong> provides a REST Interface for retrieving IRS processed data and job details of the current item graph retrieval process.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>IrsItemGraphQueryService</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <strong>IrsItemGraphQueryService</strong> implements the REST Interface of the IrsController.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>JobOrchestrator</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <strong>JobOrchestrator</strong> is a component which manages (start, end, cancel, resume) the jobs which execute the item graph retrieval process.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>RecursiveJobHandler</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <strong>RecursiveJobHandler</strong> handles the job execution recursively until a given abort criteria is reached or the complete item graph is build.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>TransferProcessManager</strong></p></td>
+<td class="tableblock halign-left valign-top"><div class="content"><div class="paragraph">
+<p>The TransferProcessManager handles the outgoing requests to the various data services.
+A job is processed in this order:</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_architecture_documentation_arc42">Architecture Documentation (arc42)</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
+<div class="olist arabic">
+<ol class="arabic">
 <li>
-<p><a href="arc42/index.html">Single chapters</a></p>
+<p>Initiation of the job and preparation of the stream of <strong>DataRequests</strong></p>
 </li>
 <li>
-<p><a href="arc42/full.html">Full document</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_notice">NOTICE</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p>This work is licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>SPDX-License-Identifier: Apache-2.0</p>
+<p><strong>RecursiveJobHandler</strong> requesting for AAS via the Digital Twin registry.</p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)</p>
+<p>Analyzing the structure of the AAS response by collecting the traversal aspect.</p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2022, 2023 BOSCH AG</p>
+<p>Requesting submodel data for given items of next level.</p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2021, 2022 ZF Friedrichshafen AG</p>
+<p>Recursively iteration over step 2-4 until an abort criterion is reached.</p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2022  ISTOS GmbH</p>
+<p>Assembles the complete item graph.</p>
 </li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Contributors to the Eclipse Foundation</p>
-</li>
-<li>
-<p>Source URL: <a href="https://github.com/eclipse-tractusx/item-relationship-service" class="bare">https://github.com/eclipse-tractusx/item-relationship-service</a></p>
-</li>
-</ul>
-</div>
+</ol>
+</div></div></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>BlobStore</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The BlobStore is the database where the relationships and tombstones are stored for a requested item.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>JobStore</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The JobStore is the database where the jobs with the information about the requested item are stored.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Digital Twin Client</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Digital Twin Client is the interface to the Digital Twin Registry. It provides an interface for the Asset Administration Shells.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>Decentralized Digital Twin Client</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">In a decentralized network, the Digital Twin Client connects to the EDC which then proxies the requests to the digital twin registry on provider side.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>EDC Client</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The EDC Client is used to communicate with the EDC network, negotiate contracts and retrieve submodel data.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>EssController</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <strong>EssController</strong> provides a REST Interface to perform BPN investigations of supply chain.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>PolicyStoreController</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The <strong>PolicyStoreController</strong> provides a REST Interface for getting, adding and deleting accepted IRS EDC policies. These policies will be used to validate usage policies of EDC contract offers.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>

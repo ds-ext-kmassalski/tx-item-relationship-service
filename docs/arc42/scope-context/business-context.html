@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>Item Relationship Service Documentation</title>
+<title>Business context</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,79 +439,41 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Item Relationship Service Documentation</h1>
+<h1>Business context</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_administration_guide">Administration Guide</a></li>
-<li><a href="#_api_documentation">API-Documentation</a></li>
-<li><a href="#_architecture_documentation_arc42">Architecture Documentation (arc42)</a></li>
-<li><a href="#_notice">NOTICE</a></li>
+<li><a href="#_consumer">Consumer</a></li>
+<li><a href="#_catena_x_network">Catena-X network</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
+<div id="preamble">
+<div class="sectionbody">
+<div class="imageblock">
+<div class="content">
+<img src="business-context.svg" alt="business context" width="273" height="327">
+</div>
+</div>
+</div>
+</div>
 <div class="sect1">
-<h2 id="_administration_guide">Administration Guide</h2>
+<h2 id="_consumer">Consumer</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="administration/administration-guide.html">administration/administration-guide.html</a></p>
+<p>The IRS API is being consumed by the dismantler dashboard and other parties which are part of the Catena-X network. They need to provide valid credentials issued by the Catena-X IAM. Additionally, they must provide a base global asset identifier to retrieve information for as well as configuration details for the view on that information.</p>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_api_documentation">API-Documentation</h2>
+<h2 id="_catena_x_network">Catena-X network</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="api-specification/api-specification.html">OpenApi specification</a></p>
+<p>The IRS retrieves data from the Catena-X network (using the necessary infrastructure, see Technical Context), aggregates it and provides it back to the consumers. This connection is mandatory. If the Catena-X services are unavailable, the IRS cannot perform any work.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_architecture_documentation_arc42">Architecture Documentation (arc42)</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="arc42/index.html">Single chapters</a></p>
-</li>
-<li>
-<p><a href="arc42/full.html">Full document</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_notice">NOTICE</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>This work is licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>SPDX-License-Identifier: Apache-2.0</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022, 2023 BOSCH AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2022 ZF Friedrichshafen AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022  ISTOS GmbH</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Contributors to the Eclipse Foundation</p>
-</li>
-<li>
-<p>Source URL: <a href="https://github.com/eclipse-tractusx/item-relationship-service" class="bare">https://github.com/eclipse-tractusx/item-relationship-service</a></p>
-</li>
-</ul>
+<p>As of now, the IRS uses its own IAM credentials to gather the required data. This might be changed to use the consumer credentials in the future.</p>
 </div>
 </div>
 </div>

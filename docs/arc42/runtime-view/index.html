@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>Item Relationship Service Documentation</title>
+<title>Runtime view</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,77 +439,60 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Item Relationship Service Documentation</h1>
+<h1>Runtime view</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_administration_guide">Administration Guide</a></li>
-<li><a href="#_api_documentation">API-Documentation</a></li>
-<li><a href="#_architecture_documentation_arc42">Architecture Documentation (arc42)</a></li>
-<li><a href="#_notice">NOTICE</a></li>
+<li><a href="#_irs_iterative">IRS Iterative</a></li>
+<li><a href="#_irs_recursive">IRS Recursive</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_administration_guide">Administration Guide</h2>
+<h2 id="_irs_iterative">IRS Iterative</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><a href="administration/administration-guide.html">administration/administration-guide.html</a></p>
+<p>This section describes the iterative flow, the main processes of the IRS, and explains how data is transferred and processed when a job is executed.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_api_documentation">API-Documentation</h2>
-<div class="sectionbody">
-<div class="paragraph">
-<p><a href="api-specification/api-specification.html">OpenApi specification</a></p>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_architecture_documentation_arc42">Architecture Documentation (arc42)</h2>
-<div class="sectionbody">
 <div class="ulist">
 <ul>
 <li>
-<p><a href="arc42/index.html">Single chapters</a></p>
+<p><a href="irs-iterative/irs-iterative.html">Overall</a></p>
 </li>
 <li>
-<p><a href="arc42/full.html">Full document</a></p>
+<p><a href="irs-iterative/scenario-1.html">Scenario 1: Create Job</a></p>
+</li>
+<li>
+<p><a href="irs-iterative/scenario-2.html">Scenario 2: Job Execution</a></p>
+</li>
+<li>
+<p><a href="irs-iterative/scenario-3.html">Scenario 3: Request for JobResponse</a></p>
+</li>
+<li>
+<p><a href="irs-iterative/scenario-4.html">Scenario 4: Cancel job execution</a></p>
 </li>
 </ul>
 </div>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_notice">NOTICE</h2>
+<h2 id="_irs_recursive">IRS Recursive</h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p>This work is licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
+<p>This section covers the main processes of the IRS in a recursive scenario in a network.
+This recursive scenario is illustrated using the various use cases realized in the scenario.</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>SPDX-License-Identifier: Apache-2.0</p>
+<p><a href="ess-top-down/ess-top-down.html">Use Case: ESS (Environmental and Social Standards) Top-Down approach</a></p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)</p>
+<p><a href="ess-top-down/ess-top-down-scenario-1.html">Scenario 1: Register an Ess-Investigation-Order</a></p>
 </li>
 <li>
-<p>SPDX-FileCopyrightText: 2022, 2023 BOSCH AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2022 ZF Friedrichshafen AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022  ISTOS GmbH</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Contributors to the Eclipse Foundation</p>
-</li>
-<li>
-<p>Source URL: <a href="https://github.com/eclipse-tractusx/item-relationship-service" class="bare">https://github.com/eclipse-tractusx/item-relationship-service</a></p>
+<p><a href="ess-top-down/ess-top-down-scenario-2.html">Scenario 2: Register an Ess-Investigation-Job</a></p>
 </li>
 </ul>
 </div>

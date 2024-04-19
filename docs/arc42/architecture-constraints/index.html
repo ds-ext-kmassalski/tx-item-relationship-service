@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>Item Relationship Service Documentation</title>
+<title>Architecture constraints</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,79 +439,251 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Item Relationship Service Documentation</h1>
+<h1>Architecture constraints</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
 <ul class="sectlevel1">
-<li><a href="#_administration_guide">Administration Guide</a></li>
-<li><a href="#_api_documentation">API-Documentation</a></li>
-<li><a href="#_architecture_documentation_arc42">Architecture Documentation (arc42)</a></li>
-<li><a href="#_notice">NOTICE</a></li>
+<li><a href="#_technical_constraints">Technical Constraints</a></li>
+<li><a href="#_organizational_constraints">Organizational Constraints</a></li>
+<li><a href="#_political_constraints">Political constraints</a></li>
+<li><a href="#_development_conventions">Development conventions</a>
+<ul class="sectlevel2">
+<li><a href="#_code_analysis_linting_and_code_coverage">Code analysis, linting and code coverage</a></li>
+</ul>
+</li>
 </ul>
 </div>
 </div>
 <div id="content">
 <div class="sect1">
-<h2 id="_administration_guide">Administration Guide</h2>
+<h2 id="_technical_constraints">Technical Constraints</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p><a href="administration/administration-guide.html">administration/administration-guide.html</a></p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Cloud Agnostic Architecture approach</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IRS provides a reference application/implementation which is deployable on any cloud ecosystem. There is no vendor lock to any cloud vendor.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Boot and the Spring Framework are used as the underlying framework for Java development.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Spring Boot and the Spring Framework are used to create a simple, production-grade based application that can be deployed without any additional infrastructure components.</p>
+<p class="tableblock">Orchestration of application components and integration with other libraries/frameworks.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lombok</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Lombok for boilerplate code generation. Keeping code concise improves quality and maintainability.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kubernetes is used for container orchestration</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Kubernetes as container orchestration system used for software deployment, scaling and management of the IRS application.  This supports our software infrastructure and ensures efficient management and scalability of the IRS reference application.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker containers are used to provide a microservice oriented architecture</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Deployments are made on reliable production-ready images. Avoiding repetitive, mundane configuration tasks for container orchestration.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker Compose is used to define and tune multi-container-applications based on Docker container technologies.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Docker containers to develop independently of the underlying OS.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_api_documentation">API-Documentation</h2>
+<h2 id="_organizational_constraints">Organizational Constraints</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p><a href="api-specification/api-specification.html">OpenApi specification</a></p>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 33.3333%;">
+<col style="width: 33.3333%;">
+<col style="width: 33.3334%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+<th class="tableblock halign-left valign-top">Comment</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CX-Services</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Provide IRS as a C-X Shared Data Service.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">App Marketplace &amp; API Connection</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The IRS Application must be available to the user in the App Marketplace.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">App Marketplace &amp; API Connection</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Federal Ministry for Economic Affairs and Energy (BMWi) promotion</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The Federal Ministry for Economic Affairs and Energy (BMWi) promotes the project and provides funds for the project.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Technology Readiness Level (TRL) for products developed within the CX consortia</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">As IRS is a reference implementation, the Technology Readiness Level (TRL) must not be above TRL 8.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Operational Readiness for Release 1 has to be fulfilled</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The minimum requirements for release 1 has to be archived. Later on, the Operational Readiness for Release has to be fulfilled according to the requirements of the C-X consortia.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_architecture_documentation_arc42">Architecture Documentation (arc42)</h2>
+<h2 id="_political_constraints">Political constraints</h2>
 <div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="arc42/index.html">Single chapters</a></p>
-</li>
-<li>
-<p><a href="arc42/full.html">Full document</a></p>
-</li>
-</ul>
-</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Open Source</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FOSS licenses approved by the Eclipse Foundation must be used. This could represent the initial set that the CX community agrees on to regulate the content contribution under FOSS licenses.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Apache License 2.0 is one of the approved licenses that should be used to respect and guarantee Intellectual Property (IP).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Java OpenJDK Version JDK &gt;= 17</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">IRS provides an open source application standard. It uses OpenJDK, which is licensed under the GNU General Public License (GNU GPL) version 2.</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 <div class="sect1">
-<h2 id="_notice">NOTICE</h2>
+<h2 id="_development_conventions">Development conventions</h2>
 <div class="sectionbody">
-<div class="paragraph">
-<p>This work is licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>SPDX-License-Identifier: Apache-2.0</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022, 2023 BOSCH AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2022 ZF Friedrichshafen AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022  ISTOS GmbH</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Contributors to the Eclipse Foundation</p>
-</li>
-<li>
-<p>Source URL: <a href="https://github.com/eclipse-tractusx/item-relationship-service" class="bare">https://github.com/eclipse-tractusx/item-relationship-service</a></p>
-</li>
-</ul>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 50%;">
+<col style="width: 50%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Name</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Architecture documentation</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Architectural documentation of the IRS reference application/implementation following the ARC42 template.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Coding guidelines</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">We follow the Google Java Style Guide. This is ensured by using the unified code formatter in the team and enforcing the style via Maven and Checkstyle / PMD.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Executable Bundle provided via the App Marketplace</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Since IRS is available in the App Marketplace, the application should be provided in one executable bundle.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Module structure</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The entire build is driven by a Maven file, which runs itself from a single Dockerfile.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Code Analysis, Linting and Code Coverage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A consistent style increases the readability and maintainability of the code base. Hence, we use analyzers to enforce consistency and style rules. We enforce the code style and rules in the CI to avoid merging non-compliant code.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="sect2">
+<h3 id="_code_analysis_linting_and_code_coverage">Code analysis, linting and code coverage</h3>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+<col style="width: 25%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Tool</th>
+<th class="tableblock halign-left valign-top">Scope</th>
+<th class="tableblock halign-left valign-top">Rule</th>
+<th class="tableblock halign-left valign-top">Configuration (via files / annotations)</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Tidy</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enforce Maven POM code convention</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fail build on untidy pom.xml</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">FindSecBugs</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">SpotBugs plugin to add security bug coverage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fail build on violations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">N/A</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Checkstyle</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Enforce coding standards</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fail build on violations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.config/checkstyle-suppressions.xml
+@SuppressWarnings("checkstyle:XXX")</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">PMD</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Source code analyzer to find common programming flaws</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fail build on violations</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.config/pmd-rules.xml
+@SuppressWarnings("PMD.XXX")</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">JaCoCo</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Test coverage</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Fail build on coverage &lt; 80%</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">pom.xml
+@ExcludeFromCodeCoverageGeneratedReport</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Dependabot</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Automated dependency updates built into GitHub. Provides pull requests for dependency updates.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Every dependency update automatically generates a pull request.</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.github/dependabot.yml</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">CodeQl</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Discover vulnerabilities across a code base.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.github/workflows/codeql.yml</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock">KICS</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Infrastructure as Code scannings.</p></td>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">.github/workflows/kics.yml</p></td>
+</tr>
+</tbody>
+</table>
 </div>
 </div>
 </div>

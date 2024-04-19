@@ -5,7 +5,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="generator" content="Asciidoctor 2.0.18">
-<title>Item Relationship Service Documentation</title>
+<title>Scenario 1: One EDC with multiple DTRs</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
 <style>
 /*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
@@ -439,79 +439,138 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 </head>
 <body class="article toc2 toc-left">
 <div id="header">
-<h1>Item Relationship Service Documentation</h1>
 <div id="toc" class="toc2">
 <div id="toctitle">Table of Contents</div>
-<ul class="sectlevel1">
-<li><a href="#_administration_guide">Administration Guide</a></li>
-<li><a href="#_api_documentation">API-Documentation</a></li>
-<li><a href="#_architecture_documentation_arc42">Architecture Documentation (arc42)</a></li>
-<li><a href="#_notice">NOTICE</a></li>
+<ul class="sectlevel3">
+<li><a href="#_scenario_1_one_edc_with_multiple_dtrs">Scenario 1: One EDC with multiple DTRs</a></li>
+<li><a href="#_scenario_2_multiple_edcs_with_one_dtr">Scenario 2: Multiple EDCs with one DTR</a></li>
+<li><a href="#_scenario_3_one_edc_with_one_dtr">Scenario 3: One EDC with one DTR</a></li>
+<li><a href="#_scenario_4_multiple_edcs_with_multiple_dtrs">Scenario 4: Multiple EDCs with multiple DTRs</a></li>
+<li><a href="#_scenario_5_multiple_edcs_with_no_dtrs">Scenario 5: Multiple EDCs with no DTRs</a></li>
+<li><a href="#_special_scenario_same_dt_in_multiple_dtrs">Special Scenario: Same DT in multiple DTRs</a></li>
+<li><a href="#_special_scenario_multiple_dts_with_the_same_globalassetid_in_one_dtr">Special Scenario: Multiple DTs (with the same globalAssetId) in one DTR</a></li>
 </ul>
 </div>
 </div>
 <div id="content">
-<div class="sect1">
-<h2 id="_administration_guide">Administration Guide</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p><a href="administration/administration-guide.html">administration/administration-guide.html</a></p>
+<p>The Dataspace Discovery Service handles multiple EDC-Urls received for BPN.
+This applies to the following scenarios.</p>
 </div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_api_documentation">API-Documentation</h2>
-<div class="sectionbody">
+<div class="sect3">
+<h4 id="_scenario_1_one_edc_with_multiple_dtrs">Scenario 1: One EDC with multiple DTRs</h4>
 <div class="paragraph">
-<p><a href="api-specification/api-specification.html">OpenApi specification</a></p>
+<p>IRS queries all DTRs for the globalAssetId and will take the first result it gets.
+If none of the DTRs return a result, IRS will create a tombstone.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--one-EDC-with-multiple-DTRs.svg" alt="discovery DTR  one EDC with multiple DTRs" width="535" height="478">
 </div>
 </div>
-</div>
-<div class="sect1">
-<h2 id="_architecture_documentation_arc42">Architecture Documentation (arc42)</h2>
-<div class="sectionbody">
-<div class="ulist">
-<ul>
-<li>
-<p><a href="arc42/index.html">Single chapters</a></p>
-</li>
-<li>
-<p><a href="arc42/full.html">Full document</a></p>
-</li>
-</ul>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_notice">NOTICE</h2>
-<div class="sectionbody">
 <div class="paragraph">
-<p>This work is licensed under the <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache-2.0</a>.</p>
+<p>Same diagram with a little more detail on IRS side:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p>SPDX-License-Identifier: Apache-2.0</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Bayerische Motoren Werke Aktiengesellschaft (BMW AG)</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022, 2023 BOSCH AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2022 ZF Friedrichshafen AG</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2022  ISTOS GmbH</p>
-</li>
-<li>
-<p>SPDX-FileCopyrightText: 2021, 2023 Contributors to the Eclipse Foundation</p>
-</li>
-<li>
-<p>Source URL: <a href="https://github.com/eclipse-tractusx/item-relationship-service" class="bare">https://github.com/eclipse-tractusx/item-relationship-service</a></p>
-</li>
-</ul>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--one-EDC-with-multiple-DTRs--detailed.svg" alt="discovery DTR  one EDC with multiple DTRs  detailed" width="904" height="778">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scenario_2_multiple_edcs_with_one_dtr">Scenario 2: Multiple EDCs with one DTR</h4>
+<div class="paragraph">
+<p>IRS starts a contract negotiation for all registry contract offers in parallel and queries the DTRs for all successful negotiations.
+The first registry which responds with a DT will be the one used by IRS.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-one-DTR.svg" alt="discovery DTR  multiple EDCs with one DTR" width="729" height="540">
+</div>
+</div>
+<div class="paragraph">
+<p>Same diagram with a little more detail on IRS side:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-one-DTR--detailed.svg" alt="discovery DTR  multiple EDCs with one DTR  detailed" width="1091" height="942">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scenario_3_one_edc_with_one_dtr">Scenario 3: One EDC with one DTR</h4>
+<div class="paragraph">
+<p>Only one EDC found for BPN and the catalog only contains one offer for the DTR.
+IRS will use this registry and will create a tombstone if no DT could be found for the globalAssetId.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--one-EDC-with-one-DTR.svg" alt="discovery DTR  one EDC with one DTR" width="422" height="295">
+</div>
+</div>
+<div class="paragraph">
+<p>Same diagram with a little more detail on IRS side:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--one-EDC-with-one-DTR--detailed.svg" alt="discovery DTR  one EDC with one DTR  detailed" width="787" height="494">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scenario_4_multiple_edcs_with_multiple_dtrs">Scenario 4: Multiple EDCs with multiple DTRs</h4>
+<div class="paragraph">
+<p>IRS starts a contract negotiation for all the registry offers.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-multiple-DTRs.svg" alt="discovery DTR  multiple EDCs with multiple DTRs" width="729" height="627">
+</div>
+</div>
+<div class="paragraph">
+<p>Same diagram with a little more detail on IRS side:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-multiple-DTRs--detailed.svg" alt="discovery DTR  multiple EDCs with multiple DTRs  detailed" width="1163" height="1454">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_scenario_5_multiple_edcs_with_no_dtrs">Scenario 5: Multiple EDCs with no DTRs</h4>
+<div class="paragraph">
+<p>IRS starts a contract negotiation for all the registry offers and creates a tombstone since no DTR could be discovered.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-no-DTRs.svg" alt="discovery DTR  multiple EDCs with no DTRs" width="497" height="495">
+</div>
+</div>
+<div class="paragraph">
+<p>Same diagram with a little more detail on IRS side:</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-EDCs-with-no-DTRs--detailed.svg" alt="discovery DTR  multiple EDCs with no DTRs  detailed" width="861" height="824">
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_special_scenario_same_dt_in_multiple_dtrs">Special Scenario: Same DT in multiple DTRs</h4>
+<div class="paragraph">
+<p>IRS will use all registries to query for the globalAssetId and takes the first result which is returned.
+If no DT could be found in any of the DTRs, IRS will create a tombstone.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_special_scenario_multiple_dts_with_the_same_globalassetid_in_one_dtr">Special Scenario: Multiple DTs (with the same globalAssetId) in one DTR</h4>
+<div class="paragraph">
+<p>IRS uses the <code>/query</code> endpoint of the DTR to get the DT id based on the globalAssetId.
+If more than one id is present for a globalAssetId, IRS will use the first of the list.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="discovery-DTR--multiple-DTs-with-the-same-globalAssedId-in-one-DTR.svg" alt="discovery DTR  multiple DTs with the same globalAssedId in one DTR" width="225" height="191">
 </div>
 </div>
 </div>
