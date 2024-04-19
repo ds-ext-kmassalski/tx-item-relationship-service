@@ -7,7 +7,7 @@ xref:administration/administration-guide.adoc[]
 xref:api-specification/api-specification.adoc[OpenApi specification]
 
 == Swagger-UI
-link:/swagger-ui[Swagger-UI]
+link:file:///swagger-ui[Swagger-UI]
 
 == Architecture Documentation (arc42)
 - xref:arc42/index.adoc[Single chapters]
