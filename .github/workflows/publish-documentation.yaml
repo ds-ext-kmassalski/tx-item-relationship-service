@@ -112,10 +112,23 @@ jobs:
         run: |
           mv docs/src/diagram-replacer/assets/ docs/target/generated-docs/assets/
 
-      - name: Update documentation on GitHub Pages
-        if: github.ref == 'refs/heads/main'
-        uses: peaceiris/actions-gh-pages@v3.9.3
+      - name: Generate Swagger UI
+        uses: Legion2/swagger-ui-action@v1
+        with:
+          output: swagger-ui
+          spec-file: docs/src/api/irs-api.yaml
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: "./docs/target/generated-docs"
+          publish_dir: swagger-ui
           destination_dir: "docs"
+
+#      - name: Update documentation on GitHub Pages
+#        if: github.ref == 'refs/heads/main'
+#        uses: peaceiris/actions-gh-pages@v3.9.3
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_dir: "./docs/target/generated-docs"
+#          destination_dir: "docs"
